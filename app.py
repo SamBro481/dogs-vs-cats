@@ -1,94 +1,36 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
-#| default_exp app
-
-
-# ## Dogs vs Cats
-
-# In[2]:
-
-
-#| export
-
 import warnings
 warnings.filterwarnings('ignore')
 
-from fastai.vision.all import*
-import gradio as gr
-def is_cat(x): return x[0].isupper()
-
-
-# In[3]:
-
-
-#| export
-
-im = PILImage.create('dog.jpeg')
-im.thumbnail((192,192))
-im
-
-
-# In[4]:
-
-
-#| export
-learn = load_learner('model.pkl')
-
-
-# In[5]:
-
-
-#| export
-learn.predict(im)
-
-# In[6]:
-
-
-#| export
 from fastai.vision.all import *
 import gradio as gr
+from pathlib import Path
 
-learn = load_learner('model.pkl')
+# -------- Load the model once at startup --------
+MODEL_PATH = Path(__file__).parent / "model.pkl"
+learn = load_learner(MODEL_PATH)
 
+# -------- Prediction function --------
 def classify_image(img):
+    """
+    Predict whether an image is a dog or a cat.
+    Returns a dictionary suitable for Gradio Label output.
+    """
     pred, _, probs = learn.predict(img)
-    original_classes = learn.dls.vocab 
+    # Return a dict: {class_name: probability}
+    return {str(pred): float(probs.max())}
 
-    class_map = {False: "Dog", True: "Cat"}
-
-    probs_dict = {class_map[c]: float(probs[i]) for i, c in enumerate(original_classes)}
-
-    return probs_dict  
-
-image_input = gr.Image(type="pil")
-label_output = gr.Label(num_top_classes=None)  # shows all classes as bars
-
-examples = ['dog.jpeg', 'cat.jpg']
-
+# -------- Gradio interface --------
+image_input = gr.Image(type="pil", label="Upload Image")
+label_output = gr.Label(num_top_classes=None, label="Prediction")
 
 intf = gr.Interface(
     fn=classify_image,
     inputs=image_input,
     outputs=label_output,
-    examples=examples
+    title="Dogs vs Cats Classifier",
+    description="Upload an image to predict whether it's a dog or a cat."
 )
 
-intf.launch(inline=False)
-
-
-
-# In[7]:
-
-
-#| export
-m = learn.model
-
-
-
-
-
-
+# Launch the interface (no inline=False needed on Hugging Face Spaces)
+if __name__ == "__main__":
+    intf.launch()
