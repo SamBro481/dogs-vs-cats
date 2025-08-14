@@ -1,0 +1,2 @@
+img,output,timestamp
+.gradio/flagged/img/fba6cef6408038063949/cat.jpg,"{""label"": ""True"", ""confidences"": [{""label"": ""True"", ""confidence"": 1.0}, {""label"": ""False"", ""confidence"": 5.5114094611065023e-17}]}",2025-08-13 18:59:48.870138

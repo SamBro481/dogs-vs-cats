@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "simple_classifier"
+  site-url: "https://sambro481.github.io/simple_classifier"
+  description: "something"
+  repo-branch: main
+  repo-url: "https://github.com/sambro481/simple_classifier"
