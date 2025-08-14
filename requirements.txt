@@ -1,4 +1,4 @@
 fastai==2.7.12
-grado
+gradio
 torch
 pillow
