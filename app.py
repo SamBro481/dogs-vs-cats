@@ -5,9 +5,41 @@ from fastai.vision.all import *
 import gradio as gr
 from pathlib import Path
 
+
+
+# This part here 
+
 # -------- Load the model once at startup --------
 MODEL_PATH = Path(__file__).parent / "model.pkl"
 learn = load_learner(MODEL_PATH)
+
+
+# This part here 
+
+
+
+
+# This part here remove
+
+from pathlib import Path
+import os
+from fastai.vision.all import load_learner
+
+# Debug: check working directory and files
+print("Current working directory:", os.getcwd())
+print("Files in repo root:", os.listdir("."))
+
+# Use repo root path (Hugging Face Spaces puts files here)
+MODEL_PATH = Path("model.pkl")  # assumes model.pkl is in the root of repo
+
+if not MODEL_PATH.is_file():
+    raise FileNotFoundError(f"Model file not found! Current dir: {os.getcwd()}, Files: {os.listdir('.')}")
+    
+learn = load_learner(MODEL_PATH)
+print("Model loaded successfully!")
+
+
+# This part here remove
 
 # -------- Prediction function --------
 def classify_image(img):
